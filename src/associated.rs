@@ -277,13 +277,13 @@ mod impls {
         };
         ([@SetOp <$($targ: ty),*> => $($args: ident $(: $bound: path $(| $others:path )*)?),* => $t: ty, $iter_diff: ty, $iter_insect: ty, $iter_sym: ty, $iter_union: ty]; $($tail:tt)*) => {
             impl<$($args $(: $bound $(+ $others)*)?),*> AssociatedSetOperation<$($targ),*> for $t {
-                type DifferenceIter<'a> where $($args: 'a),* = $iter_diff;
+                type DifferenceIter<'a> = $iter_diff where $($args: 'a),*;
 
-                type IntersectionIter<'a> where $($args: 'a),* = $iter_insect;
+                type IntersectionIter<'a> = $iter_insect where $($args: 'a),*;
 
-                type SymmetricDifferenceIter<'a> where $($args: 'a),* = $iter_sym;
+                type SymmetricDifferenceIter<'a> = $iter_sym where $($args: 'a),*;
 
-                type UnionIter<'a> where $($args: 'a),* = $iter_union;
+                type UnionIter<'a> = $iter_union where $($args: 'a),*;
 
                 fn difference<'a>(&'a self, other: &'a Self) -> Self::DifferenceIter<'a> {
                     <$t>::difference(self, other)
@@ -333,13 +333,13 @@ mod impls {
         };
         ([@MapIter <$($targ: ty),*> => $($args: ident $(: $bound: path $(| $others:path )*)?),* => $t: ty, $err: ty, $iter_key: ty, $iter_value: ty, $iter_value_mut: ty]; $($tail:tt)*) => {
             impl<$($args $(: $bound $(+ $others)*)?),*> AssociatedMapIter<$($targ),*> for $t {
-                type TryInsertError<'a> where $($args: 'a),* = $err;
+                type TryInsertError<'a> = $err where $($args: 'a),*;
 
-                type KeyIter<'a> where $($args: 'a),* = $iter_key;
+                type KeyIter<'a> = $iter_key where $($args: 'a),*;
 
-                type ValueIter<'a> where $($args: 'a),* = $iter_value;
+                type ValueIter<'a> = $iter_value where $($args: 'a),*;
 
-                type ValueIterMut<'a> where $($args: 'a),* = $iter_value_mut;
+                type ValueIterMut<'a> = $iter_value_mut where $($args: 'a),*;
 
                 fn try_insert(&mut self, key: K, value: V) -> Result<&mut V, Self::TryInsertError<'_>> {
                     <$t>::try_insert(self, key, value)
