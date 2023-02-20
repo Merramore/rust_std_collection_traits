@@ -380,7 +380,10 @@ mod impls {
         () => {};
         ([@Delegate $($args: ident $(: $bound: path $(| $others:path )*)?),* => $t: ty, $iter: ty]; $($tail:tt)*) => {
             impl<$($args $(: $bound $(+ $others)*)?),*> Iterable for $t {
-                type Iter<'a> where T: 'a = $iter;
+                type Iter<'a>
+                where
+                    T: 'a,
+                = $iter;
 
                 fn iter(&self) -> Self::Iter<'_> {
                     <$t>::iter(self)
@@ -390,7 +393,10 @@ mod impls {
         };
         ([@Delegate $($args: ident $(: $bound: path $(| $others:path )*)?),* => $t: ty, $iter: ty, $iter_mut: ty]; $($tail:tt)*) => {
             impl<$($args $(: $bound $(+ $others)*)?),*> Iterable for $t {
-                type Iter<'a> where T: 'a = $iter;
+                type Iter<'a>
+                where
+                    T: 'a,
+                = $iter;
 
                 fn iter(&self) -> Self::Iter<'_> {
                     <$t>::iter(self)
@@ -398,7 +404,10 @@ mod impls {
             }
 
             impl<$($args $(: $bound $(+ $others)*)?),*> IterableMut for $t {
-                type IterMut<'a> where T: 'a = $iter_mut;
+                type IterMut<'a>
+                where
+                    T: 'a,
+                = $iter_mut;
 
                 fn iter_mut(&mut self) -> Self::IterMut<'_> {
                     <$t>::iter_mut(self)
@@ -408,7 +417,11 @@ mod impls {
         };
         ([@DelegateMap $($args: ident $(: $bound: path $(| $others:path )*)?),* => $t: ty, $iter: ty, $iter_mut: ty]; $($tail:tt)*) => {
             impl<$($args $(: $bound $(+ $others)*)?),*> AssociatedIterable for $t {
-                type Iter<'a> where K: 'a, V: 'a = $iter;
+                type Iter<'a>
+                where
+                    K: 'a,
+                    V: 'a,
+                = $iter;
 
                 fn iter(&self) -> Self::Iter<'_> {
                     <$t>::iter(self)
@@ -416,7 +429,11 @@ mod impls {
             }
 
             impl<$($args $(: $bound $(+ $others)*)?),*> AssociatedIterableMut for $t {
-                type IterMut<'a> where K: 'a, V: 'a = $iter_mut;
+                type IterMut<'a>
+                where
+                    K: 'a,
+                    V: 'a,
+                = $iter_mut;
 
                 fn iter_mut(&mut self) -> Self::IterMut<'_> {
                     <$t>::iter_mut(self)
@@ -452,7 +469,10 @@ mod impls {
         };
         ([@Range $t: ty, $iter: ty, $iter_mut: ty]; $($tail:tt)*) => {
             impl<T> Range for $t {
-                type RangeIter<'a> where T: 'a = $iter;
+                type RangeIter<'a>
+                where
+                    T: 'a,
+                = $iter;
 
                 fn range<R: std::ops::RangeBounds<Self::SizeType>>(&self, range: R) -> Self::RangeIter<'_> {
                     <$t>::range(self, range)
@@ -460,7 +480,10 @@ mod impls {
             }
 
             impl<T> RangeMut for $t {
-                type RangeIterMut<'a> where T: 'a = $iter_mut;
+                type RangeIterMut<'a>
+                where
+                    T: 'a,
+                = $iter_mut;
 
                 fn range_mut<R: std::ops::RangeBounds<Self::SizeType>>(&mut self, range: R) -> Self::RangeIterMut<'_> {
                     <$t>::range_mut(self, range)
@@ -470,7 +493,11 @@ mod impls {
         };
         ([@AssocRange $($args: ident $(: $bound: path $(| $others:path )*)?),* => $t: ty, $iter: ty, $iter_mut: ty]; $($tail:tt)*) => {
             impl<$($args $(: $bound $(+ $others)*)?),*> AssociatedRange for $t {
-                type RangeIter<'a> where K: 'a, V: 'a = $iter;
+                type RangeIter<'a>
+                where
+                    K: 'a,
+                    V: 'a,
+                = $iter;
 
                 fn range<R: std::ops::RangeBounds<K>>(&self, range: R) -> Self::RangeIter<'_> {
                     <$t>::range(self, range)
@@ -478,7 +505,11 @@ mod impls {
             }
 
             impl<$($args $(: $bound $(+ $others)*)?),*> AssociatedRangeMut for $t {
-                type RangeIterMut<'a> where K: 'a, V: 'a = $iter_mut;
+                type RangeIterMut<'a>
+                where
+                    K: 'a,
+                    V: 'a,
+                = $iter_mut;
 
                 fn range_mut<R: std::ops::RangeBounds<K>>(&mut self, range: R) -> Self::RangeIterMut<'_> {
                     <$t>::range_mut(self, range)
@@ -488,7 +519,10 @@ mod impls {
         };
         ([@DrainFull $targ: ty => $($args: ident $(: $bound: path $(| $others:path )*)?),* => $t: ty, $iter: ty]; $($tail:tt)*) => {
             impl<$($args $(: $bound $(+ $others)*)?),*> DrainFull for $t {
-                type DrainIter<'a> where $($args: 'a),* = $iter;
+                type DrainIter<'a>
+                where
+                    $($args: 'a),*
+                = $iter;
 
                 fn drain(&mut self) -> Self::DrainIter<'_> {
                     <$t>::drain(self)
@@ -498,7 +532,10 @@ mod impls {
         };
         ([@DrainRange $($args: ident $(: $bound: path $(| $others:path )*)?),* => $t: ty, $iter: ty]; $($tail:tt)*) => {
             impl<$($args $(: $bound $(+ $others)*)?),*> DrainRange for $t {
-                type DrainRangeIter<'a> where T: 'a = $iter;
+                type DrainRangeIter<'a>
+                where
+                    T: 'a,
+                = $iter;
 
                 fn drain_range<R: RangeBounds<Self::SizeType>>(&mut self, range: R) -> Self::DrainRangeIter<'_> {
                     <$t>::drain(self, range)
@@ -509,7 +546,11 @@ mod impls {
         };
         ([@DrainFilter $($args: ident $(: $bound: path $(| $others:path )*)?),* => $t: ty, $iter: ty]; $($tail:tt)*) => {
             impl<$($args $(: $bound $(+ $others)*)?),*> DrainFilter for $t {
-                type DrainFilterIter<'a, F> where T: 'a, F: FnMut(&mut T) -> bool + 'a = $iter;
+                type DrainFilterIter<'a, F>
+                where
+                    T: 'a,
+                    F: FnMut(&mut T) -> bool + 'a
+                = $iter;
 
                 fn drain_filter<'a, F: FnMut(&mut T) -> bool + 'a>(&'a mut self, filter: F) -> Self::DrainFilterIter<'a, F> {
                     <$t>::drain_filter(self, filter)
@@ -520,7 +561,11 @@ mod impls {
         };
         ([@DrainFilterSet $($args: ident $(: $bound: path $(| $others:path )*)?),* => $t: ty, $iter: ty]; $($tail:tt)*) => {
             impl<$($args $(: $bound $(+ $others)*)?),*> AssociatedDrainFilterSet for $t {
-                type DrainFilterIter<'a, F> where T: 'a, F: FnMut(&T) -> bool + 'a = $iter;
+                type DrainFilterIter<'a, F>
+                where
+                    T: 'a,
+                    F: FnMut(&T) -> bool + 'a,
+                = $iter;
 
                 fn drain_filter<'a, F: FnMut(&T) -> bool + 'a>(&'a mut self, filter: F) -> Self::DrainFilterIter<'a, F> {
                     <$t>::drain_filter(self, filter)
@@ -531,7 +576,12 @@ mod impls {
         };
         ([@AssocDrainFilter $($args: ident $(: $bound: path $(| $others:path )*)?),* => $t: ty, $iter: ty]; $($tail:tt)*) => {
             impl<$($args $(: $bound $(+ $others)*)?),*> AssociatedDrainFilter for $t {
-                type DrainFilterIter<'a, F> where K: 'a, V: 'a, F: FnMut(&K, &mut V) -> bool + 'a = $iter;
+                type DrainFilterIter<'a, F>
+                where
+                    K: 'a,
+                    V: 'a,
+                    F: FnMut(&K, &mut V) -> bool + 'a,
+                = $iter;
 
                 fn drain_filter<'a, F: FnMut(&K, &mut V) -> bool + 'a>(&'a mut self, filter: F) -> Self::DrainFilterIter<'a, F> {
                     <$t>::drain_filter(self, filter)
