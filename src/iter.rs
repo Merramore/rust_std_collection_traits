@@ -382,7 +382,7 @@ mod impls {
             impl<$($args $(: $bound $(+ $others)*)?),*> Iterable for $t {
                 type Iter<'a>
                 where
-                    T: 'a,
+                    $($args: 'a,)*
                 = $iter;
 
                 fn iter(&self) -> Self::Iter<'_> {
@@ -395,7 +395,7 @@ mod impls {
             impl<$($args $(: $bound $(+ $others)*)?),*> Iterable for $t {
                 type Iter<'a>
                 where
-                    T: 'a,
+                    $($args: 'a,)*
                 = $iter;
 
                 fn iter(&self) -> Self::Iter<'_> {
@@ -406,7 +406,7 @@ mod impls {
             impl<$($args $(: $bound $(+ $others)*)?),*> IterableMut for $t {
                 type IterMut<'a>
                 where
-                    T: 'a,
+                    $($args: 'a,)*
                 = $iter_mut;
 
                 fn iter_mut(&mut self) -> Self::IterMut<'_> {
@@ -419,8 +419,7 @@ mod impls {
             impl<$($args $(: $bound $(+ $others)*)?),*> AssociatedIterable for $t {
                 type Iter<'a>
                 where
-                    K: 'a,
-                    V: 'a,
+                    $($args: 'a,)*
                 = $iter;
 
                 fn iter(&self) -> Self::Iter<'_> {
@@ -431,8 +430,7 @@ mod impls {
             impl<$($args $(: $bound $(+ $others)*)?),*> AssociatedIterableMut for $t {
                 type IterMut<'a>
                 where
-                    K: 'a,
-                    V: 'a,
+                    $($args: 'a,)*
                 = $iter_mut;
 
                 fn iter_mut(&mut self) -> Self::IterMut<'_> {
@@ -495,8 +493,7 @@ mod impls {
             impl<$($args $(: $bound $(+ $others)*)?),*> AssociatedRange for $t {
                 type RangeIter<'a>
                 where
-                    K: 'a,
-                    V: 'a,
+                    $($args: 'a,)*
                 = $iter;
 
                 fn range<R: std::ops::RangeBounds<K>>(&self, range: R) -> Self::RangeIter<'_> {
@@ -507,8 +504,7 @@ mod impls {
             impl<$($args $(: $bound $(+ $others)*)?),*> AssociatedRangeMut for $t {
                 type RangeIterMut<'a>
                 where
-                    K: 'a,
-                    V: 'a,
+                    $($args: 'a,)*
                 = $iter_mut;
 
                 fn range_mut<R: std::ops::RangeBounds<K>>(&mut self, range: R) -> Self::RangeIterMut<'_> {
@@ -521,7 +517,7 @@ mod impls {
             impl<$($args $(: $bound $(+ $others)*)?),*> DrainFull for $t {
                 type DrainIter<'a>
                 where
-                    $($args: 'a),*
+                    $($args: 'a,)*
                 = $iter;
 
                 fn drain(&mut self) -> Self::DrainIter<'_> {
@@ -534,7 +530,7 @@ mod impls {
             impl<$($args $(: $bound $(+ $others)*)?),*> DrainRange for $t {
                 type DrainRangeIter<'a>
                 where
-                    T: 'a,
+                    $($args: 'a,)*
                 = $iter;
 
                 fn drain_range<R: RangeBounds<Self::SizeType>>(&mut self, range: R) -> Self::DrainRangeIter<'_> {
@@ -548,7 +544,7 @@ mod impls {
             impl<$($args $(: $bound $(+ $others)*)?),*> DrainFilter for $t {
                 type DrainFilterIter<'a, F>
                 where
-                    T: 'a,
+                    $($args: 'a,)*
                     F: FnMut(&mut T) -> bool + 'a
                 = $iter;
 
@@ -563,7 +559,7 @@ mod impls {
             impl<$($args $(: $bound $(+ $others)*)?),*> AssociatedDrainFilterSet for $t {
                 type DrainFilterIter<'a, F>
                 where
-                    T: 'a,
+                    $($args: 'a,)*
                     F: FnMut(&T) -> bool + 'a,
                 = $iter;
 
@@ -578,8 +574,7 @@ mod impls {
             impl<$($args $(: $bound $(+ $others)*)?),*> AssociatedDrainFilter for $t {
                 type DrainFilterIter<'a, F>
                 where
-                    K: 'a,
-                    V: 'a,
+                    $($args: 'a,)*
                     F: FnMut(&K, &mut V) -> bool + 'a,
                 = $iter;
 
