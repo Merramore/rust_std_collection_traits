@@ -1,9 +1,7 @@
 //! Trait crate for abstracting common operations in `std` collections.
-#![feature(generic_associated_types)]
 #![feature(array_methods)]
 #![feature(allocator_api)]
 #![feature(associated_type_defaults)]
-#![feature(try_reserve)]
 #![feature(trusted_random_access)]
 #![feature(type_alias_impl_trait)]
 #![feature(slice_range)]
@@ -12,7 +10,6 @@
 #![feature(hash_drain_filter)]
 #![feature(linked_list_remove)]
 #![feature(map_try_insert)]
-#![feature(map_first_last)]
 #![feature(extend_one)]
 
 use crate::elem::{AssociatedCollectionTrait, CollectionTrait, ExtendOwned, IntoIteratorOwned};
