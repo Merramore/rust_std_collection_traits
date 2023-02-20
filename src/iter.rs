@@ -10,6 +10,7 @@ pub trait Iterable: CollectionTrait {
     /// Immutable iterator type
     type Iter<'a>: Iterator<Item = &'a Self::ElemType>
     where
+        Self: 'a,
         Self::ElemType: 'a;
 
     /// Iterates over immutable reference
@@ -21,6 +22,7 @@ pub trait AssociatedIterable: AssociatedCollectionTrait {
     /// Immutable map iterator type
     type Iter<'a>: Iterator<Item = (&'a Self::KeyType, &'a Self::ValueType)>
     where
+        Self: 'a,
         Self::KeyType: 'a,
         Self::ValueType: 'a;
 
@@ -33,6 +35,7 @@ pub trait IterableMut: CollectionTrait + Mutable {
     /// Mutable iterator type
     type IterMut<'a>: Iterator<Item = &'a mut Self::ElemType>
     where
+        Self: 'a,
         Self::ElemType: 'a;
 
     /// Iterates over mutable reference
@@ -44,6 +47,7 @@ pub trait AssociatedIterableMut: AssociatedCollectionTrait + Mutable {
     /// Mutable map iterator type
     type IterMut<'a>: Iterator<Item = (&'a Self::KeyType, &'a mut Self::ValueType)>
     where
+        Self: 'a,
         Self::KeyType: 'a,
         Self::ValueType: 'a;
 
@@ -55,6 +59,7 @@ pub trait AssociatedIterableMut: AssociatedCollectionTrait + Mutable {
 pub trait Range: CollectionTrait + ExactSized {
     type RangeIter<'a>: Iterator<Item = &'a Self::ElemType>
     where
+        Self: 'a,
         Self::ElemType: 'a;
     /// Creates an iterator that covers the specified range in the `self`
     fn range<R: std::ops::RangeBounds<Self::SizeType>>(&self, range: R) -> Self::RangeIter<'_>;
@@ -64,6 +69,7 @@ pub trait Range: CollectionTrait + ExactSized {
 pub trait RangeMut: CollectionTrait + Mutable + ExactSized {
     type RangeIterMut<'a>: Iterator<Item = &'a mut Self::ElemType>
     where
+        Self: 'a,
         Self::ElemType: 'a;
     /// Creates an iterator that covers the specified range in the `self`
     fn range_mut<R: std::ops::RangeBounds<Self::SizeType>>(&mut self, range: R) -> Self::RangeIterMut<'_>;
@@ -73,6 +79,7 @@ pub trait RangeMut: CollectionTrait + Mutable + ExactSized {
 pub trait AssociatedRange: AssociatedCollectionTrait {
     type RangeIter<'a>: Iterator<Item = (&'a Self::KeyType, &'a Self::ValueType)>
     where
+        Self: 'a,
         Self::KeyType: 'a,
         Self::ValueType: 'a;
 
@@ -86,6 +93,7 @@ pub trait AssociatedRange: AssociatedCollectionTrait {
 pub trait AssociatedRangeMut: AssociatedCollectionTrait + Mutable {
     type RangeIterMut<'a>: Iterator<Item = (&'a Self::KeyType, &'a mut Self::ValueType)>
     where
+        Self: 'a,
         Self::KeyType: 'a,
         Self::ValueType: 'a;
 
@@ -99,6 +107,7 @@ pub trait AssociatedRangeMut: AssociatedCollectionTrait + Mutable {
 pub trait DrainFull: CollectionTrait + Mutable {
     type DrainIter<'a>: Iterator<Item = Self::ElemType>
     where
+        Self: 'a,
         Self::ElemType: 'a;
 
     /// Creates a draining iterator that removes the specified range in `self` and yields the removed items.
@@ -109,6 +118,7 @@ pub trait DrainFull: CollectionTrait + Mutable {
 pub trait AssociatedDrainFull: AssociatedCollectionTrait + Mutable {
     type DrainIter<'a>: Iterator<Item = (Self::KeyType, Self::ValueType)>
     where
+        Self: 'a,
         Self::KeyType: 'a,
         Self::ValueType: 'a;
 
@@ -120,6 +130,7 @@ pub trait AssociatedDrainFull: AssociatedCollectionTrait + Mutable {
 pub trait DrainRange: CollectionTrait + Mutable + ExactSized {
     type DrainRangeIter<'a>: Iterator<Item = Self::ElemType>
     where
+        Self: 'a,
         Self::ElemType: 'a;
 
     /// Creates a draining iterator that removes the specified range in `self` and yields the removed items.
@@ -130,6 +141,7 @@ pub trait DrainRange: CollectionTrait + Mutable + ExactSized {
 pub trait DrainFilter: CollectionTrait + Mutable {
     type DrainFilterIter<'a, F>: Iterator<Item = Self::ElemType>
     where
+        Self: 'a,
         Self::ElemType: 'a,
         F: FnMut(&mut Self::ElemType) -> bool + 'a;
 
@@ -148,6 +160,7 @@ pub trait DrainFilter: CollectionTrait + Mutable {
 pub trait AssociatedDrainFilterSet: CollectionTrait + Mutable {
     type DrainFilterIter<'a, F>: Iterator<Item = Self::ElemType>
     where
+        Self: 'a,
         Self::ElemType: 'a,
         F: FnMut(&Self::ElemType) -> bool + 'a;
 
@@ -166,6 +179,7 @@ pub trait AssociatedDrainFilterSet: CollectionTrait + Mutable {
 pub trait AssociatedDrainFilter: AssociatedCollectionTrait + Mutable {
     type DrainFilterIter<'a, F>: Iterator<Item = (Self::KeyType, Self::ValueType)>
     where
+        Self: 'a,
         Self::KeyType: 'a,
         Self::ValueType: 'a,
         F: FnMut(&Self::KeyType, &mut Self::ValueType) -> bool + 'a;
@@ -196,6 +210,7 @@ mod impls {
         type Iter<'a>
         where
             T: 'a,
+            Self: 'a,
         = std::slice::Iter<'a, T>;
 
         fn iter(&self) -> Self::Iter<'_> {
@@ -207,6 +222,7 @@ mod impls {
         type Iter<'a>
         where
             T: 'a,
+            Self: 'a,
         = std::slice::Iter<'a, T>;
 
         fn iter(&self) -> Self::Iter<'_> {
@@ -229,6 +245,7 @@ mod impls {
         type IterMut<'a>
         where
             T: 'a,
+            Self: 'a,
         = std::slice::IterMut<'a, T>;
 
         fn iter_mut(&mut self) -> Self::IterMut<'_> {
@@ -262,6 +279,7 @@ mod impls {
         type RangeIter<'a>
         where
             T: 'a,
+            Self: 'a,
         = std::slice::Iter<'a, T>;
 
         fn range<R: RangeBounds<Self::SizeType>>(&self, range: R) -> Self::RangeIter<'_> {
@@ -273,6 +291,7 @@ mod impls {
         type RangeIter<'a>
         where
             T: 'a,
+            Self: 'a,
         = std::slice::Iter<'a, T>;
 
         fn range<R: RangeBounds<Self::SizeType>>(&self, range: R) -> Self::RangeIter<'_> {
@@ -284,6 +303,7 @@ mod impls {
         type RangeIterMut<'a>
         where
             T: 'a,
+            Self: 'a,
         = std::slice::IterMut<'a, T>;
 
         fn range_mut<R: RangeBounds<Self::SizeType>>(&mut self, range: R) -> Self::RangeIterMut<'_> {
@@ -319,6 +339,7 @@ mod impls {
         type RangeIter<'a>
         where
             T: 'a,
+            A: 'a,
         = std::slice::Iter<'a, T>;
 
         fn range<R: RangeBounds<Self::SizeType>>(&self, range: R) -> Self::RangeIter<'_> {
@@ -330,6 +351,7 @@ mod impls {
         type RangeIterMut<'a>
         where
             T: 'a,
+            A: 'a,
         = std::slice::IterMut<'a, T>;
 
         fn range_mut<R: RangeBounds<Self::SizeType>>(&mut self, range: R) -> Self::RangeIterMut<'_> {
@@ -404,7 +426,11 @@ mod impls {
         };
         ([@Slice $t: ty]; $($tail:tt)*) => {
             impl<T, A: std::alloc::Allocator> Iterable for $t {
-                type Iter<'a> where T: 'a = std::slice::Iter<'a, T>;
+                type Iter<'a>
+                where
+                    T: 'a,
+                    A: 'a,
+                = std::slice::Iter<'a, T>;
 
                 fn iter(&self) -> Self::Iter<'_> {
                         self.as_slice().iter()
@@ -412,7 +438,11 @@ mod impls {
             }
 
             impl<T, A: std::alloc::Allocator> IterableMut for $t {
-                type IterMut<'a> where T: 'a = std::slice::IterMut<'a, T>;
+                type IterMut<'a>
+                where
+                    T: 'a,
+                    A: 'a,
+                = std::slice::IterMut<'a, T>;
 
                 fn iter_mut(&mut self) -> Self::IterMut<'_> {
                     self.as_mut_slice().iter_mut()
@@ -516,6 +546,7 @@ mod impls {
         where
             K: 'a,
             V: 'a,
+            S: 'a,
         = std::collections::hash_map::Drain<'a, K, V>;
 
         fn drain(&mut self) -> Self::DrainIter<'_> {

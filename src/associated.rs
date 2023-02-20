@@ -47,21 +47,25 @@ pub trait AssociatedSet: CollectionTrait + Contains + Iterable {
 pub trait AssociatedSetOperation<S>: AssociatedSet {
     type DifferenceIter<'a>: Iterator<Item = &'a Self::ElemType>
     where
+        Self: 'a,
         Self::ElemType: 'a,
         S: 'a;
 
     type IntersectionIter<'a>: Iterator<Item = &'a Self::ElemType>
     where
+        Self: 'a,
         Self::ElemType: 'a,
         S: 'a;
 
     type SymmetricDifferenceIter<'a>: Iterator<Item = &'a Self::ElemType>
     where
+        Self: 'a,
         Self::ElemType: 'a,
         S: 'a;
 
     type UnionIter<'a>: Iterator<Item = &'a Self::ElemType>
     where
+        Self: 'a,
         Self::ElemType: 'a,
         S: 'a;
 
@@ -148,24 +152,28 @@ pub trait AssociatedMapIter<S>: AssociatedMap {
     /// Ignore `std::error::Error` because that only applies when `K: Debug, V: Debug`
     type TryInsertError<'a>
     where
+        Self: 'a,
         Self::KeyType: 'a,
         Self::ValueType: 'a,
         S: 'a;
 
     type KeyIter<'a>: Iterator<Item = &'a Self::KeyType>
     where
+        Self: 'a,
         Self::KeyType: 'a,
         Self::ValueType: 'a,
         S: 'a;
 
     type ValueIter<'a>: Iterator<Item = &'a Self::ValueType>
     where
+        Self: 'a,
         Self::KeyType: 'a,
         Self::ValueType: 'a,
         S: 'a;
 
     type ValueIterMut<'a>: Iterator<Item = &'a mut Self::ValueType>
     where
+        Self: 'a,
         Self::KeyType: 'a,
         Self::ValueType: 'a,
         S: 'a;
